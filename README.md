@@ -1,5 +1,8 @@
 # Mocafi
 
+![Animation](https://github.com/user-attachments/assets/2997d75e-1993-46e4-93d7-97a1228b608e)
+
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.2.
 
 ## Development server
