@@ -1,38 +1,25 @@
-import { Component, AfterViewInit, ViewChild, inject } from '@angular/core';
-import { CommonModule, TitleCasePipe } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
-import {
-  MatPaginator,
-  MatPaginatorModule,
-  PageEvent,
-} from '@angular/material/paginator';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { User } from '../../user';
-import { UserService } from '../../admin.service';
-import { delay } from 'rxjs';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { UpsertUserComponent } from '../upsert-user/upsert-user.component';
+import { Component, AfterViewInit, ViewChild, inject } from "@angular/core";
+import { CommonModule, TitleCasePipe } from "@angular/common";
+import { MatTableModule } from "@angular/material/table";
+import { MatPaginator, MatPaginatorModule, PageEvent } from "@angular/material/paginator";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { User } from "../../user";
+import { UserService } from "../../admin.service";
+import { delay } from "rxjs";
+import { MatDialog, MatDialogModule } from "@angular/material/dialog";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { UpsertUserComponent } from "../upsert-user/upsert-user.component";
 
 @Component({
-  selector: 'app-user-list',
+  selector: "app-user-list",
   standalone: true,
   providers: [UserService],
-  imports: [
-    CommonModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatButtonModule,
-    MatIconModule,
-    MatProgressBarModule,
-    TitleCasePipe,
-    MatDialogModule,
-  ],
-  templateUrl: './user-list.component.html',
-  styleUrl: './user-list.component.scss',
+  imports: [CommonModule, MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatProgressBarModule, TitleCasePipe, MatDialogModule],
+  templateUrl: "./user-list.component.html",
+  styleUrl: "./user-list.component.scss",
 })
 export class UserListComponent implements AfterViewInit {
   private readonly userService = inject(UserService);
@@ -41,7 +28,7 @@ export class UserListComponent implements AfterViewInit {
   length = 2988;
   pageIndex = 0;
   pageSize = 25;
-  displayedColumns: string[] = ['name', 'gender', 'status', 'actions'];
+  displayedColumns: string[] = ["name", "email", "gender", "status", "actions"];
   dataSource = new MatTableDataSource<User>();
   loading = true;
 
@@ -72,7 +59,7 @@ export class UserListComponent implements AfterViewInit {
     const dialogRef = this.dialog.open(UpsertUserComponent, { data: {} });
 
     dialogRef.afterClosed().subscribe((newUser) => {
-      if (newUser.type === 'create') {
+      if (newUser.type === "create") {
         // insert at first row on page
         this.dataSource.data.unshift({
           id: newUser.id,
@@ -84,10 +71,10 @@ export class UserListComponent implements AfterViewInit {
         this.length++;
         this.dataSource = new MatTableDataSource(this.dataSource.data);
 
-        this.snackabar.open(`Successfully added ${newUser.name} to users`, '', {
+        this.snackabar.open(`Successfully added ${newUser.name} to users`, "", {
           duration: 4000,
-          politeness: 'assertive',
-          verticalPosition: 'top',
+          politeness: "assertive",
+          verticalPosition: "top",
         });
       }
     });
@@ -97,30 +84,28 @@ export class UserListComponent implements AfterViewInit {
     const dialogRef = this.dialog.open(UpsertUserComponent, {
       data: user,
     });
-    dialogRef
-      .afterClosed()
-      .subscribe((newUser: { type: 'create' | 'update' } & User) => {
-        if (!newUser) return;
+    dialogRef.afterClosed().subscribe((newUser: { type: "create" | "update" } & User) => {
+      if (!newUser) return;
 
-        if (newUser.type === 'update') {
-          const userIndex = this.dataSource.data.findIndex(
-            (u) => u.id == user.id
-          );
-          this.dataSource.data[userIndex] = {
-            id: newUser.id,
-            name: newUser.name,
-            email: newUser.email,
-            gender: newUser.gender,
-            status: newUser.status,
-          };
-          this.dataSource = new MatTableDataSource(this.dataSource.data);
-          this.snackabar.open(`Successfully updated ${newUser.name}`, '', {
-            duration: 4000,
-            politeness: 'assertive',
-            verticalPosition: 'top',
-          });
-        }
-      });
+      if (newUser.type === "update") {
+        const userIndex = this.dataSource.data.findIndex((u) => u.id == user.id);
+
+        console.log(newUser);
+        this.dataSource.data[userIndex] = {
+          id: newUser.id,
+          name: newUser.name,
+          email: newUser.email,
+          gender: newUser.gender,
+          status: newUser.status,
+        };
+        this.dataSource = new MatTableDataSource(this.dataSource.data);
+        this.snackabar.open(`Successfully updated ${newUser.name}`, "", {
+          duration: 4000,
+          politeness: "assertive",
+          verticalPosition: "top",
+        });
+      }
+    });
   }
 
   handleDeleteClick(user: User) {
@@ -131,10 +116,10 @@ export class UserListComponent implements AfterViewInit {
       this.dataSource.data.splice(userIndex, 1);
       this.length--;
       this.dataSource = new MatTableDataSource(this.dataSource.data);
-      this.snackabar.open(`Deleted ${user.name}`, '', {
+      this.snackabar.open(`Deleted ${user.name}`, "", {
         duration: 4000,
-        politeness: 'assertive',
-        verticalPosition: 'top',
+        politeness: "assertive",
+        verticalPosition: "top",
       });
     });
   }
