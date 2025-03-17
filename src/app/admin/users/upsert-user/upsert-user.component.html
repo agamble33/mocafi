@@ -1,0 +1,70 @@
+<div class="container">
+  <h2>{{ title }}</h2>
+
+  <form class="form" [formGroup]="userFormGroup" (submit)="handleFormSubmit()">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput type="text" [formControl]="userFormGroup.controls.name" />
+      <mat-error *ngIf="!!nameControl.errors?.['required']">
+        Please enter user name.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        type="email"
+        [formControl]="userFormGroup.controls.email"
+      />
+      <mat-error *ngIf="!!emailControl.errors?.['required']">
+        Please enter user email.
+      </mat-error>
+      <mat-error *ngIf="!!emailControl.errors?.['email']">
+        Please enter a valid user email e.g. joe&#64;company.com.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Gender</mat-label>
+      <mat-select value="" [formControl]="userFormGroup.controls.gender">
+        <mat-option value="">Select Gender</mat-option>
+        <mat-option value="male">Male</mat-option>
+        <mat-option value="female">Female</mat-option>
+      </mat-select>
+      <mat-error *ngIf="!!genderControl.errors?.['required']">
+        Please select user gender.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Status</mat-label>
+      <mat-select value="active" [formControl]="userFormGroup.controls.status">
+        <mat-option value="active">Active</mat-option>
+        <mat-option value="inactive">Inactive</mat-option>
+      </mat-select>
+      <mat-error *ngIf="!!statusControl.errors?.['required']">
+        Please select user status.
+      </mat-error>
+    </mat-form-field>
+
+    <div class="form-actions">
+      <mat-spinner *ngIf="isLoading" diameter="32"></mat-spinner>
+      <button
+        mat-flat-button
+        type="submit"
+        [disabled]="!this.userFormGroup.valid || isLoading"
+      >
+        {{ !userId ? "Create User" : "Update" }}
+      </button>
+      <button
+        mat-flat-button
+        type="button"
+        [disabled]="isLoading"
+        (click)="handleModalClose()"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

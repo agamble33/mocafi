@@ -1,0 +1,15 @@
+.table-container {
+  height: 60vh;
+  min-height: 600px;
+  overflow: scroll;
+}
+
+.mat-column-name {
+  width: 40%;
+}
+
+.add-user-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+}
